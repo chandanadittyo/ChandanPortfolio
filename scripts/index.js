@@ -1,3 +1,5 @@
+import { data } from "./data.js";
+  
   jQuery(window).load('body', function () {
       dizme_tm_my_load();
   });
@@ -8,16 +10,18 @@
 
 const index = {};
 
-index.$menu = $('#sideMenu');
+
+
+index.$menu = $('sideMenu');
 index.$navItem = $('.navItem');
 index.$navItemName = $('.navItemName')
-index.$home = $('#home');
-index.$about=$('#about');
-index.$skills = $('#skills');
-index.$works = $('#works');
-index.$contact = $('#contact');
-index.$menuButton = $('#menuButton');
-index.$scrollDown = $('#scrollDown');
+index.$home = $('home');
+index.$about=$('about');
+index.$skills = $('skills');
+index.$works = $('works');
+index.$contact = $('contact');
+index.$menuButton = $('menuButton');
+index.$scrollDown = $('scrollDown');
 index.isOpen = false;
 
 // Scroll function
@@ -122,3 +126,42 @@ function dizme_tm_progress_line() {
   var position = value;
   line.css('height', position + "%");
 }
+
+let projects = document.querySelector('.worksContainer')
+let showProjects  = data.map(project=>{
+  projects.innerHTML +=`<article class="workBox">
+  <div class="workImageContainer">
+    <img src=${project.img} alt="netlify.">
+  </div>
+  <div class="workDescribeContainer">
+    <h3>${project.name}</h3>
+    <h4>Technologies Used: <span class="techStack">${project.technology}</span>
+
+    </h4>
+    <ul>
+      ${(() => {
+        let list = '';
+        for (let i = 0; i < project.info.length; i++) {
+          list += `<li>${project.info[i]}</li>`;
+        }
+        return list;
+      })()}
+      
+
+    </ul>
+    <div class="workLinks">
+      <a href=${project.live} class="liveLink" target="_blank"
+        rel="noopener noreferrer">Live</a>
+      <a href=${project.repo} class="repoLink" target="_blank"
+        rel="noopener noreferrer">Repo</a>
+    </div>
+  </div>
+</article>`
+
+})
+
+
+  
+
+
+
