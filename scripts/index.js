@@ -1,167 +1,190 @@
 import { data } from "./data.js";
-  
-  jQuery(window).load('body', function () {
-      dizme_tm_my_load();
-  });
-  jQuery(window).on('scroll', function () {
-      dizme_tm_progress_line();
-  });
 
+window.addEventListener("load", function () {
+  dizme_tm_my_load();
+});
+
+window.addEventListener("scroll", function () {
+  dizme_tm_progress_line();
+});
 
 const index = {};
 
-
-
-index.$menu = $('sideMenu');
-index.$navItem = $('.navItem');
-index.$navItemName = $('.navItemName')
-index.$home = $('home');
-index.$about=$('about');
-index.$skills = $('skills');
-index.$works = $('works');
-index.$contact = $('contact');
-index.$menuButton = $('menuButton');
-index.$scrollDown = $('scrollDown');
+index.menu = document.querySelector("#sideMenu");
+index.navItems = document.querySelectorAll(".navItem");
+index.navItemNames = document.querySelectorAll(".navItemName");
+index.home = document.querySelector("#home");
+index.about = document.querySelector("#about");
+index.skills = document.querySelector("#skills");
+index.works = document.querySelector("#works");
+index.contact = document.querySelector("#contact");
+index.menuButton = document.querySelector("#menuButton");
+index.scrollDown = document.querySelector("#scrollDown");
 index.isOpen = false;
 
 // Scroll function
-index.scroll = function(target) {
-  $('html,body').animate({ scrollTop: $(target).offset().top }, 500);
-}
+index.scroll = function (target) {
+  window.scrollTo({
+    top: target.offsetTop,
+    behavior: "smooth",
+  });
+};
 
 // Menu button function
-index.showHideMenu = function() {
-  index.$menu.toggleClass('sideMenuHide sideMenuShow');
+index.showHideMenu = function () {
+  index.menu.classList.toggle("sideMenuHide");
+  index.menu.classList.toggle("sideMenuShow");
   index.isOpen = !index.isOpen;
-}
+};
 
 // Mobile class changes on initial load
-if ($(window).width() <= 990) {
-  index.$menu.addClass('sideMenuHide').removeClass('sideMenuShow');
-  index.$scrollDown.hide();
+if (window.innerWidth <= 990) {
+  index.menu.classList.add("sideMenuHide");
+  index.menu.classList.remove("sideMenuShow");
+  index.scrollDown.style.display = "none";
 }
 
-index.eventListeners = function() {
-  // when windox resizes between large and small displayes
-  $(window).on('resize', function() {
-    if ($(window).width() > 990) {
-      index.$menu.removeClass('sideMenuHide').addClass('sideMenuShow')
-      index.$scrollDown.show();
-      index.isOpen= false;
-    } else {
-      index.$menu.removeClass('sideMenuShow').addClass('sideMenuHide');
+index.eventListeners = function () {
+  // when window resizes between large and small displays
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 990) {
+      index.menu.classList.remove("sideMenuHide");
+      index.menu.classList.add("sideMenuShow");
+      index.scrollDown.style.display = "block";
       index.isOpen = false;
-      index.$scrollDown.hide();
+    } else {
+      index.menu.classList.remove("sideMenuShow");
+      index.menu.classList.add("sideMenuHide");
+      index.scrollDown.style.display = "none";
+      index.isOpen = false;
     }
   });
 
   // Nav menu click events for scroll function
-  $('a[href*=\\#]').on('click', function () {
-    index.scroll(this.hash);
+  index.navItems.forEach(function (item) {
+    item.addEventListener("click", function (e) {
+      e.preventDefault();
+      const target = document.querySelector(item.getAttribute("href"));
+      if (target) {
+        index.scroll(target);
+      }
+    });
   });
 
   // Menu button click event
-  index.$menuButton.on('click', index.showHideMenu);
+  index.menuButton.addEventListener("click", index.showHideMenu);
 
   // Hide menu when clicking a link
-  index.$navItem.on('click', function() {
-    if (index.isOpen) {// Hide menu when clicking a link
-      index.showHideMenu();
-    }
+  index.navItems.forEach(function (item) {
+    item.addEventListener("click", function () {
+      if (index.isOpen) {
+        index.showHideMenu();
+      }
+    });
   });
 
   // Menu button ENTER key event
-  index.$menuButton.on('keypress', function(e){
-    if (e.which === 13) {
-      $(this).trigger('click');
+  index.menuButton.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      index.showHideMenu();
     }
-  })
-}
+  });
+};
 
 // init method
-index.init = function() {
+index.init = function () {
   index.eventListeners();
-}
+};
 
 // Document Ready
-$(function() {
+document.addEventListener("DOMContentLoaded", function () {
   index.init();
-})
-
+});
 
 // Preloader
 function dizme_tm_my_load() {
-  "use strict";
   var speed = 500;
   setTimeout(function () {
-      dizme_tm_preloader();
+    dizme_tm_preloader();
   }, speed);
 }
 
 function dizme_tm_preloader() {
-  "use strict";
-  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ? true : false;
-  var preloader = $('#preloader');
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(
+    navigator.userAgent
+  );
+  var preloader = document.querySelector("#preloader");
   if (!isMobile) {
-      setTimeout(function () {
-          preloader.addClass('preloaded');
-      }, 800);
-      setTimeout(function () {
-          preloader.remove();
-      }, 2000);
-  } else {
+    setTimeout(function () {
+      preloader.classList.add("preloaded");
+    }, 800);
+    setTimeout(function () {
       preloader.remove();
+    }, 2000);
+  } else {
+    preloader.remove();
   }
 }
 
-
-
 function dizme_tm_progress_line() {
-  "use strict";
-  var line = jQuery('.progressbar .line');
-  var documentHeight = jQuery(document).height();
-  var windowHeight = jQuery(window).height();
-  var winScroll = jQuery(window).scrollTop();
+  var line = document.querySelector(".progressbar .line");
+  var documentHeight = document.documentElement.scrollHeight;
+  var windowHeight = window.innerHeight;
+  var winScroll = window.pageYOffset;
   var value = (winScroll / (documentHeight - windowHeight)) * 100;
   var position = value;
-  line.css('height', position + "%");
+  // line.style.height = position + "%";
 }
 
-let projects = document.querySelector('.worksContainer')
-let showProjects  = data.map(project=>{
-  projects.innerHTML +=`<article class="workBox">
-  <div class="workImageContainer">
-    <img src=${project.img} alt="netlify.">
-  </div>
-  <div class="workDescribeContainer">
-    <h3>${project.name}</h3>
-    <h4>Technologies Used: <span class="techStack">${project.technology}</span>
+let projects = document.querySelector(".worksContainer");
+data.forEach(function (project) {
+  let workBox = document.createElement("article");
+  workBox.className = "workBox";
 
-    </h4>
-    <ul>
-      ${(() => {
-        let list = '';
-        for (let i = 0; i < project.info.length; i++) {
-          list += `<li>${project.info[i]}</li>`;
-        }
-        return list;
-      })()}
-      
+  let workImageContainer = document.createElement("div");
+  workImageContainer.className = "workImageContainer";
+  let image = document.createElement("img");
+  image.src = project.img;
+  image.alt = "netlify.";
+  workImageContainer.appendChild(image);
 
-    </ul>
-    <div class="workLinks">
-      <a href=${project.live} class="liveLink" target="_blank"
-        rel="noopener noreferrer">Live</a>
-      <a href=${project.repo} class="repoLink" target="_blank"
-        rel="noopener noreferrer">Repo</a>
-    </div>
-  </div>
-</article>`
+  let workDescribeContainer = document.createElement("div");
+  workDescribeContainer.className = "workDescribeContainer";
+  let heading = document.createElement("h3");
+  heading.textContent = project.name;
+  let technologies = document.createElement("h4");
+  technologies.innerHTML = `Technologies Used: <span class="techStack">${project.technology}</span>`;
 
-})
+  let ul = document.createElement("ul");
+  project.info.forEach(function (info) {
+    let li = document.createElement("li");
+    li.textContent = info;
+    ul.appendChild(li);
+  });
 
+  let workLinks = document.createElement("div");
+  workLinks.className = "workLinks";
+  let liveLink = document.createElement("a");
+  liveLink.href = project.live;
+  liveLink.target = "_blank";
+  liveLink.rel = "noopener noreferrer";
+  liveLink.textContent = "Live";
+  let repoLink = document.createElement("a");
+  repoLink.href = project.repo;
+  repoLink.target = "_blank";
+  repoLink.rel = "noopener noreferrer";
+  repoLink.textContent = "Repo";
 
-  
+  workLinks.appendChild(liveLink);
+  workLinks.appendChild(repoLink);
 
+  workDescribeContainer.appendChild(heading);
+  workDescribeContainer.appendChild(technologies);
+  workDescribeContainer.appendChild(ul);
+  workDescribeContainer.appendChild(workLinks);
 
+  workBox.appendChild(workImageContainer);
+  workBox.appendChild(workDescribeContainer);
 
+  projects.appendChild(workBox);
+});
