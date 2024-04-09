@@ -36,18 +36,18 @@ export const data = [
     live: "https://hometour2.netlify.app/",
     repo: "https://github.com/chandanadittyo/hometour2",
   },
-  {
-    img: "images/thumbnail/netflix.png",
-    name: "Netlify Login",
-    technology: `HTML, CSS `,
-    info: [
-      "Completely built with HTML & CSS",
-      "Fully Responsive for all screen sizes",
-    ],
+  // {
+  //   img: "images/thumbnail/netflix.png",
+  //   name: "Netlify Login",
+  //   technology: `HTML, CSS `,
+  //   info: [
+  //     "Completely built with HTML & CSS",
+  //     "Fully Responsive for all screen sizes",
+  //   ],
 
-    live: "https://demo-netflix.netlify.app/",
-    repo: "https://github.com/chandanadittyo/netflix-login",
-  },
+  //   live: "https://demo-netflix.netlify.app/",
+  //   repo: "https://github.com/chandanadittyo/netflix-login",
+  // },
   {
     img: "images/thumbnail/panda.png",
     name: "Panda Ecommerce",
